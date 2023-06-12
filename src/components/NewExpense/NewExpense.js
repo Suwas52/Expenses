@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import "./NewExpense.css";
 import ExpenseForm from "./ExpenseForm";
+import userEvent from "@testing-library/user-event";
 
 const NewExpense = (props) => {
   const saveExpenseDataHandler = (enterExpenseData) => {
@@ -12,9 +13,27 @@ const NewExpense = (props) => {
     props.onAddExpense(expenseData);
   };
 
+  const [isEditing, setIsEditing] = useState(false);
+
+  const addExpensesHandler = () => {
+    setIsEditing(true);
+  };
+
+  const cancelHandler = () => {
+    setIsEditing(false);
+  };
+
   return (
     <div className="new-expense">
-      <ExpenseForm onSaveExpenseData={saveExpenseDataHandler} />
+      {!isEditing && (
+        <button onClick={addExpensesHandler}>Add New Expense</button>
+      )}
+      {isEditing && (
+        <ExpenseForm
+          onSaveExpenseData={saveExpenseDataHandler}
+          onCancel={cancelHandler}
+        />
+      )}
     </div>
   );
 };
